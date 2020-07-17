@@ -58,3 +58,6 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+//step 3
+const 
