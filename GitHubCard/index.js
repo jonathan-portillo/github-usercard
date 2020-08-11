@@ -3,6 +3,15 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const dataCards = document.querySelector(".cards");
+
+axios.get("https://api.github.com/users/jonathan-portillo").then((response) => {
+  console.log("success", response.data);
+  dataCards.appendChild(gitCards(response.data));
+});
+// .catch((error) => {
+//   console.log("error", response.data);
+// });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -28,7 +37,19 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "https://api.github.com/users/tmshkr",
+  "https://api.github.com/users/Uniloki",
+  "https://api.github.com/users/AaronShawnSoler",
+  "https://api.github.com/users/nicholas-myers",
+  "https://api.github.com/users/SFMack",
+];
+
+followersArray.forEach((object) =>
+  axios.get(object).then(function (response) {
+    dataCards.appendChild(gitCards(response.data));
+  })
+);
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -58,3 +79,46 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+//step 3
+
+const gitCards = (object) => {
+  const card = document.createElement("div");
+  const image = document.createElement("img");
+  const cardInfo = document.createElement("div");
+  const name = document.createElement("h3");
+  const username = document.createElement("p");
+  const location = document.createElement("p");
+  const profile = document.createElement("p");
+  const link = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
+
+  card.classList.add("card");
+  cardInfo.classList.add("card-info");
+  name.classList.add("name");
+  username.classList.add("username");
+
+  card.appendChild(image);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(link);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  image.src = object.avatar_url;
+  name.textContent = object.name;
+  username.textContent = object.login;
+  location.textContent = object.location;
+  profile.textContent = object.html_url;
+  followers.textContent = "Followers: " + object.followers;
+  following.textContent = "Following: " + object.following;
+  bio.textContent = "Bio: " + object.bio;
+
+  return card;
+};
